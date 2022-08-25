@@ -7,35 +7,12 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Read Share</title>
+<title>Insert title here</title>
 </head>
 <body>
-	<h1>Save Travels</h1>
-	<table>
-	    <thead>
-	        <tr>
-	            <th>Expense Name</th>
-	            <th>Vendor</th>
-	            <th>Amount</th>
-	            <th>Actions</th>
-	        </tr>
-	    </thead>
-	    <tbody>
-	         <c:forEach var="expense" items= "${expenses}">
-	         	<tr>	         		
-	         		<td><c:out value ="${expense.expenseName}"/></td>
-	         		<td><c:out value="${expense.vendor}"/></td>
-	         		<td>$<c:out value="${expense.amount}"/></td>
-	         		<td><a href="/expense/edit/${expense.id}">Edit</a></td>
-	         	</tr>
-	         </c:forEach>
-	    </tbody>
-	</table>
-	
 	<div>
-		<h1> Add an expense:</h1>
-		<div>
-			<form:form action="/expense" method="POST" modelAttribute="expense">
+			<form:form action="/expense/${book.id}" method="POST" modelAttribute="expense">
+				<input type="hidden" name="_method" value="put" />
 				<div>
 					<form:label path="expenseName">Expense Name:</form:label>
 					<form:errors path="expenseName" class="text-danger"/>
@@ -59,6 +36,6 @@
 				<button>Submit</button>
 			</form:form>
 		</div>
-	</div>
+
 </body>
 </html>
