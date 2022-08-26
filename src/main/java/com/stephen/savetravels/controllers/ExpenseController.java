@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.stephen.savetravels.models.Expense;
 import com.stephen.savetravels.services.ExpenseService;
@@ -56,16 +58,33 @@ public class ExpenseController {
 			
 	    }
 		
-		@PutMapping("/expense/{id}")
-		public String update (@Valid @ModelAttribute("expense") Expense expense, BindingResult result) {
-			if(result.hasErrors()) {
-				return"edit.jsp";
-			}else {
-				expenseService.updateExpense(expense);
-				return"redirect:/expense";
-			}
+		
+		@PutMapping("/edit/{id}")
+	    public String update(
+	    		@PathVariable("id") Long id, Model model,
+	    		@Valid @ModelAttribute("expense") Expense expense, BindingResult result) {
+	    	if(result.hasErrors()) {
+	    		return "edit.jsp";
+	    	}else {
+	    		expenseService.updateExpense(expense);
+	    		return "redirect:/expenses";
+	    	}
+	    }
+		
+		@GetMapping("/expenses/{id}")
+		public String show (@PathVariable("id") Long id, Model model) {
+			Expense expense = expenseService.findExpense(id);
+			model.addAttribute("expense", expense);
+			return "show.jsp";
 		}
 		
 		
+		@RequestMapping(value="/expenses/{id}", method=RequestMethod.DELETE)
+		public String destroy(@PathVariable("id") Long id) {
+			expenseService.deleteExpense(id);
+			return "redirect:/expenses";
+		}
 		
+		
+
 }
